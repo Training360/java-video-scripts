@@ -86,3 +86,26 @@ public class FixBonusCalculator implements BonusCalculator {
   }
 }
 ```
+
+java-se-module12-lesson02p4-lab.mp4
+
+# exceptions
+
+```java
+try {
+  Scanner scanner = new Scanner(NumbersReader.class.getResourceAsStream("numbers.csv"));
+  while (scanner.hasNextLine()) {
+    String line = scanner.nextLine();
+    int number = Integer.parseInt(line);
+  }
+}
+catch (NumberFormatException e) {
+  // ...
+}
+catch (Exception e) {
+  // ...
+}
+finally {
+  scanner.close();
+}
+```
