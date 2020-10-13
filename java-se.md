@@ -10,12 +10,14 @@ java-se-module01-lesson01p5-lab.mp4
 # introide
 
 ```xml
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
-    </properties>
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>15</maven.compiler.target>
+</properties>
 ```
+
+java-se-module01-lesson04-lab.mp4
 
 # cmdarguments
 
@@ -28,6 +30,32 @@ java-se-module01-lesson01p5-lab.mp4
 IDEA-ban, majd parancssorból
 
 java-se-module03-lesson01p5.mp4
+
+# references
+
+```java
+int yearOfBirth = 1980;  // Stacken jön létre
+
+String employeeName = "John Doe";
+// "John Doe" string objektum a heapen jön létre
+// name, ami egy referencia, a stacken jön létre
+
+Employee jack = new Employee("Jack Doe", 1970);  
+// alkalmazott objektum a heapen jön létre
+// john, ami egy referencia, a stacken jön létre
+
+Employee sameJack = jack;  
+  
+System.out.println(john == sameJack); // true
+
+Employee anotherJack = new Employee("Jack Doe", 1970);
+
+System.out.println(jack == anotherJack); // false
+```
+
+* `this` kulcsszó használata
+
+java-se-module04-lesson05-lab.mp4
 
 # interface
 
