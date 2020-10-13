@@ -109,3 +109,5 @@ finally {
   scanner.close();
 }
 ```
+
+Kivételt magát is tovább lehet dobni, vagy becsomagolni
