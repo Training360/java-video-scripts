@@ -3,6 +3,8 @@
 
 # cmdarguments
 
+`C:\trainer\java-se` könyvtár, `cmdarguments` csomag.
+
 `CommandLineArguments` `main()` metódus
 
 `args.lengh`, `args[0]`
