@@ -1,6 +1,12 @@
 
 2020-10-13
 
+# installjdk
+
+* Környezeti változók
+
+java-se-module01-lesson01p5-lab.mp4
+
 # cmdarguments
 
 `C:\trainer\java-se` könyvtár, `cmdarguments` csomag.
@@ -111,3 +117,5 @@ finally {
 ```
 
 Kivételt magát is tovább lehet dobni, vagy becsomagolni
+
+java-se-module14-lesson01-lab.mp4
