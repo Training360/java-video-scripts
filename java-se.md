@@ -24,3 +24,18 @@ Deklarálok egy `Trainer` majd egy `Human` típusú változót, majd egy lépés
 `Trainer` osztály ezt implementálja
 
 `Course` osztály is implementálja ezt
+
+java-se-module12-lesson02-lab.mp4
+
+# interfacerules
+
+* `Trainer`, `HasName`, `getName()` metódus `CanWork`, `doWork()` metódus
+* Interfész nem példányosítható
+
+```java
+public interface EmployeeType {
+  int FULL_TIME = 0;
+  
+  int PART_TIME = 1;
+}
+```
