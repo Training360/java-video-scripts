@@ -1,11 +1,21 @@
 
 2020-10-13
 
-# installjdk
+# installjdk (nem került felvételre!!!)
 
 * Környezeti változók
 
 java-se-module01-lesson01p5-lab.mp4
+
+# introide
+
+```xml
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+    </properties>
+```
 
 # cmdarguments
 
