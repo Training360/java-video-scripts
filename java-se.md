@@ -31,7 +31,7 @@ IDEA-ban, majd parancssorból
 
 java-se-module03-lesson01p5.mp4
 
-# references
+# references (nem lett felvéve, lemerült a mikrofon!!!)
 
 ```java
 int yearOfBirth = 1980;  // Stacken jön létre
