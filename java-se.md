@@ -20,6 +20,30 @@ java-se-module01-lesson01p5-lab.mp4
 
 java-se-module01-lesson04-lab.mp4
 
+# introgit
+
+* Projekt létrehozás: `C:\training\introgit`
+
+```java
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>15</maven.compiler.target>
+</properties>
+```
+* `.gitignore`
+* Új osztály `HelloWorld`
+* Git/Init
+* Add
+* Commit
+* Módosítás
+* Diff
+* Commit
+* Módosítás
+* Revert
+
+java-se-module01-lesson05-lab.mp4
+
 # cmdarguments
 
 `C:\trainer\java-se` könyvtár, `cmdarguments` csomag.
