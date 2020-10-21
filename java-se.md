@@ -31,7 +31,7 @@ IDEA-ban, majd parancssorból
 
 java-se-module03-lesson01p5.mp4
 
-# references (nem lett felvéve, lemerült a mikrofon!!!)
+# references
 
 ```java
 public static void main(String[] args) {
