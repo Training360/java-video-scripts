@@ -1,8 +1,9 @@
 
 2020-10-13
 
-# installjdk (nem került felvételre!!!)
+# installjdk
 
+* Telepítés
 * Környezeti változók
 
 java-se-module01-lesson01p5-lab.mp4
