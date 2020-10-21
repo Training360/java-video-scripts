@@ -34,23 +34,21 @@ java-se-module03-lesson01p5.mp4
 # references (nem lett felvéve, lemerült a mikrofon!!!)
 
 ```java
-int yearOfBirth = 1980;  // Stacken jön létre
+public static void main(String[] args) {
+    int yearOfBirth = 1980;
 
-String employeeName = "John Doe";
-// "John Doe" string objektum a heapen jön létre
-// name, ami egy referencia, a stacken jön létre
+    String name = "John Doe";
 
-Employee jack = new Employee("Jack Doe", 1970);  
-// alkalmazott objektum a heapen jön létre
-// john, ami egy referencia, a stacken jön létre
+    Trainer john = new Trainer("John Doe", 1980);
 
-Employee sameJack = jack;  
-  
-System.out.println(john == sameJack); // true
+    Trainer trainer = john;
 
-Employee anotherJack = new Employee("Jack Doe", 1970);
+    System.out.println(trainer == john);
 
-System.out.println(jack == anotherJack); // false
+    Trainer john2 = new Trainer("John Doe", 1980);
+
+    System.out.println(trainer == john2);
+}
 ```
 
 * `this` kulcsszó használata
