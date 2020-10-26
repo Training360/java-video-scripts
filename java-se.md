@@ -41,6 +41,18 @@ java-se-module01-lesson04-lab.mp4
 
 java-se-module01-lesson05-lab.mp4
 
+# introgithub
+
+`introgit` projekten
+
+* Projekt létrehozása
+* Settings - Git auth
+* Remote hozzáadása
+* Push
+* Változtatás és Git commit and push
+
+java-se-module01-lesson05p5-lab.mp4
+
 # cmdarguments
 
 `C:\trainer\java-se` könyvtár, `cmdarguments` csomag.
