@@ -1,6 +1,3 @@
-
-2020-10-13
-
 # installjdk
 
 * Telepítés
@@ -79,6 +76,44 @@ public static void main(String[] args) {
 * `this` kulcsszó használata
 
 java-se-module04-lesson05-lab.mp4
+
+# junit5
+
+```xml
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-engine</artifactId>
+    <version>5.5.2</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+    <scope>test</scope>
+</dependency>
+```
+
+* `@Test` annotáció
+* Régi kód
+* Új: `import`, `public` nem kell, `assertEquals()`
+* Hamcrest deprecated
+
+```java
+@Test
+public void testCreate() {
+    // Given
+    Trainer trainer = new Trainer("John Doe");
+
+    // When
+    String name = trainer.getName();
+
+    // Then
+    assertThat(name, equalTo("John Doe"));
+}
+```
+
+java-se-module06-lesson01p5.mp4
 
 # interface
 
