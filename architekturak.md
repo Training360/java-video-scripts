@@ -42,6 +42,7 @@ Budapest
 * Ki kell tömöríteni
 * Grafikus felületről indítható
 * Intuitív felhasználói felület, listázás, hozzáadás
+* Mentés, betöltés
 
 ## Központi adatbázis
 
