@@ -18,7 +18,7 @@ címről (telepítő csomag)
 * Alkalmazás futtatása (`LocationsCli`)
 * Listázás, hozzáadás
 * Megőrzi az adatokat kilépés után is
-* Adattárolás lokálisan a `%HOME%\locations` könyvtárban
+* Adattárolás lokálisan a `%HOMEPATH%\locations` könyvtárban
   * Bináris állomány
 * Scriptelhető
   * Hozzunk létre egy `input.txt` állományt a következő tartalommal
