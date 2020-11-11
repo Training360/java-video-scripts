@@ -13,6 +13,7 @@ Szükséges szoftverek:
 * Alkalmazás letöltés a `https://github.com/Training360/architecture-public/releases/download/1.0.0/LocationsCli-1.0.0.exe`
 címről (telepítő csomag)
 * Telepítés (telepítés kiemelése)
+* Telepítésre kerül a `C:\Program Files\LocationsCli` könyvtárba.
 * Parancssor (prompt)
 * Alkalmazás futtatása (`LocationsCli`)
 * Listázás, hozzáadás
