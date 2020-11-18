@@ -106,20 +106,20 @@ update tag set name = 'sa' where id = 6;
 docker run -d -p27017:27017 --name locations-mongo mongo
 ```
 
-```shell
-docker exec -it locations-mongo mongo locations
-```
-
 * Alkalmazás konfigurálása, elindítása
 * Listázás, hozzáadás
 * Csatlakozás parancssorból, dokumentum alapú adatbázis, JSON
 
+```shell
+docker exec -it locations-mongo mongo locations
+```
+
 ```javascript
 db.location.find()
 
-db.location.insert({name: "Budapest 1", lat: 1, lon: 2})
+db.location.insert({name: "Work", lat: 2, lon: 2})
 
-db.location.update({_id: "5f8e8e8237d3c021af6da9b6"}, {$set: {name: "Budapest"}})
+db.location.update({_id: "5f8e8e8237d3c021af6da9b6"}, {$set: {name: "Work2"}})
 ```
 
 * Mongo leállítása
