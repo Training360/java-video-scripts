@@ -73,11 +73,15 @@ docker exec -it locations-dbclient-mariadb mysql locations
 * SQL utasítások
 
 ```sql
-select * from location;
-
 desc location;
 
-desc tag;
+select * from location;
+
+insert into location(name, lat, lon) values ('Work2', 3, 3);
+
+update location set name = 'Work3' where id = 3;
+
+delete location where id = 3;
 
 select * from location left join tag on location.id = tag.locationId;
 ```
