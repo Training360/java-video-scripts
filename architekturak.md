@@ -144,8 +144,6 @@ docker run -d -e SPRING_DATASOURCE_URL=jdbc:mariadb://locations-mariadb/location
 docker logs -f my-locations
 ```
 
-* Ábra
-
 ## Webes alkalmazás
 
 * Ábra
