@@ -171,13 +171,16 @@ docker run --rm --network locations-net --rm curlimages/curl -L -v http://my-loc
     </head>
     <body>
         <h1>Example Page</h1>
-        <p>This is an example page.</p>
+     <p>This is an example page. See <a href="http://training360.com">Training360</a>!</p>        
     </body>
 </html>
 ```
 
-* Forrás nézet
-* DOM fa, szerkeszthető
+* Markup, hypertext
+* Megnyitás böngészőben, renderelés, forrás nézet
+* Struktúra és tartalom
+* DOM fa
+* DOM fa szerkesztése
 * `styles.css`
 
 ```html
