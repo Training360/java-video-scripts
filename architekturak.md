@@ -198,10 +198,8 @@ docker run --rm --network locations-net --rm curlimages/curl -L -v http://my-loc
 
 ## Webes alkalmazás RIA felülettel
 
-* Ellenőrizzük, hogy fut-e a webszerver: `docker ps`
-
 ```html
-<script src="myscript.js" type="text/javascript"></script>
+<input type="button" value="Click me!" />
 ```
 
 ```javascript
@@ -209,12 +207,17 @@ onload = () => document.querySelector('#welcome-button').addEventListener('click
 }
 ```
 
-### 
+```html
+<script src="myscript.js" type="text/javascript"></script>
+```
 
 * Ábra
-* HTTP kérések
+* Ellenőrizzük, hogy fut-e a webszerver: `docker ps`
 * `http://localhost:8080/`
+* Létrehozás, HTTP kérések
 * Listázás, létrehozás - ugyanazon az oldalon marad, csak egy része változik, nem változik az URL
+* JSON a válaszban
+
 
 ## REST webszolgáltatások
 
