@@ -199,7 +199,7 @@ docker run --rm --network locations-net --rm curlimages/curl -L -v http://my-loc
 ## Webes alkalmazás RIA felülettel
 
 ```html
-<input type="button" value="Click me!" />
+<input id="welcome-button" type="button" value="Click me!" />
 ```
 
 ```javascript
