@@ -240,3 +240,16 @@ docker run -d --rm -p 8081:8080 rodolpheche/wiremock
 
 ## Szerver alkalmazás webszolgáltatás interfésszel
 
+## Magas rendelkezésre állás és skálázhatóság
+
+```shell
+docker ps
+docker ps -a
+docker start
+docker stop
+docker logs -f 
+docker rm 
+docker exec -p -name
+# még egy
+docker exec -p -name
+```
