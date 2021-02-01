@@ -72,3 +72,22 @@ void testListEmployees() {
 deleteAll
 ```
 
+# Swagger UI
+
+```xml
+<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-ui</artifactId>
+  <version>${springdoc-openapi-ui.version}</version>
+</dependency>
+```
+
+```java
+@Schema(description="name of the employee", example = "John Doe") 
+@Tag( name = "Operations on employees")
+@Operation(summary = "Find employee by id",
+    description = "Find employee by id.")
+@ApiResponse(responseCode = "404",
+    description = "Employee not found")
+```
+
