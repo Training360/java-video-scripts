@@ -44,9 +44,18 @@ void testListEmployees() throws Exception {
     SpringBootTest.WebEnvironment.RANDOM_PORT)
 ```
 
+
 ```java
 @Test
 void testListEmployees() {
+    restTemplate.exchange("/api/employees",
+      HttpMethod.POST,
+      new CreateEmployeeCommand(),
+      new ParameterizedTypeReference<List<EmployeeDto>>(){})
+    .getBody();
+
+
+
   List<EmployeeDto> employees = 
     restTemplate.exchange("/api/employees",
       HttpMethod.GET,
@@ -58,3 +67,8 @@ void testListEmployees() {
           .containsExactly("John Doe", "Jane Doe");
 }
 ```
+
+```java
+deleteAll
+```
+
