@@ -91,3 +91,67 @@ deleteAll
     description = "Employee not found")
 ```
 
+# REST Assured
+
+```xml
+<dependency>
+  <groupId>io.rest-assured</groupId>
+  <artifactId>json-path</artifactId>
+  <version>${rest-assured.version}</version>
+  <scope>test</scope>
+</dependency>
+<dependency>
+  <groupId>io.rest-assured</groupId>
+  <artifactId>xml-path</artifactId>
+  <version>${rest-assured.version}</version>
+  <scope>test</scope>
+</dependency>
+<dependency>
+  <groupId>io.rest-assured</groupId>
+  <artifactId>rest-assured</artifactId>
+  <version>${rest-assured.version}</version>
+  <scope>test</scope>
+</dependency>
+<dependency>
+  <groupId>io.rest-assured</groupId>
+  <artifactId>spring-mock-mvc</artifactId>
+  <version>${rest-assured.version}</version>
+  <scope>test</scope>
+</dependency>
+```
+
+```java
+import io.restassured.http.ContentType;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static org.hamcrest.Matchers.equalTo;
+```
+
+```java
+@Autowired
+WebApplicationContext webApplicationContext;
+@BeforeEach
+void init() {
+  RestAssuredMockMvc.requestSpecification = given()
+    .contentType(ContentType.JSON)
+    .accept(ContentType.JSON);
+  RestAssuredMockMvc
+    .webAppContextSetup(webApplicationContext);
+}
+```
+
+```java
+@Test
+void testCreateEmployeeThenListEmployees() {
+    with().body(new CreateEmployeeCommand("Jack Doe")).
+    when()
+      .post("/api/employees")
+      .then()
+      .body("name", equalTo("Jack Doe"));
+    when()
+      .get("/api/employees")
+      .then()
+      .body("[0].name", equalTo("Jack Doe"));
+}
+```
