@@ -188,3 +188,33 @@ public class EmployeesControllerRestAssuredIT {
 .body(matchesJsonSchemaInClasspath("employee-dto.json"))
 ```
 
+# Content negotiation
+
+```java
+@RequestMapping(value = "/api/employees",
+  produces = {MediaType.APPLICATION_JSON_VALUE,
+    MediaType.APPLICATION_XML_VALUE})
+```
+
+```xml
+<dependency>
+  <groupId>org.glassfish.jaxb</groupId>
+  <artifactId>jaxb-runtime</artifactId>
+</dependency>
+```
+
+```java
+@XmlRootElement
+```
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@XmlRootElement(name = "employees")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class EmployeesDto {
+    @XmlElement(name = "employee")
+    private List<EmployeeDto> employees;
+}
+```
