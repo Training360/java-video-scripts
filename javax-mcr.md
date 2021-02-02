@@ -129,29 +129,42 @@ import static org.hamcrest.Matchers.equalTo;
 ```
 
 ```java
-@Autowired
-WebApplicationContext webApplicationContext;
-@BeforeEach
-void init() {
-  RestAssuredMockMvc.requestSpecification = given()
-    .contentType(ContentType.JSON)
-    .accept(ContentType.JSON);
-  RestAssuredMockMvc
-    .webAppContextSetup(webApplicationContext);
-}
-```
+@SpringBootTest
+@AutoConfigureMockMvc
+public class EmployeesControllerRestAssuredIT {
 
-```java
-@Test
-void testCreateEmployeeThenListEmployees() {
-    with().body(new CreateEmployeeCommand("Jack Doe")).
-    when()
-      .post("/api/employees")
-      .then()
-      .body("name", equalTo("Jack Doe"));
-    when()
-      .get("/api/employees")
-      .then()
-      .body("[0].name", equalTo("Jack Doe"));
+    @Autowired
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void init() {
+        RestAssuredMockMvc.requestSpecification =
+                given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON);
+        RestAssuredMockMvc.mockMvc(mockMvc);
+    }
+
+    @Test
+    void testCreateThenListEmployee() {
+        with()
+                .body(new CreateEmployeeCommand("John Doe"))
+                        .when()
+        .post("/api/employees")
+        .then()
+                .body("name", equalTo("John Doe"));
+
+        with()
+        .get("/api/employees")
+                .then()
+                .body("[0].name", equalTo("John Doe"))
+        .log();
+
+        with()
+                .get("/api/employees")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(1))
+        .log();
+    }
 }
 ```
