@@ -168,3 +168,14 @@ public class EmployeesControllerRestAssuredIT {
     }
 }
 ```
+
+# Rest Assured séma validáció
+
+```json
+"additionalProperties": false
+```
+
+```java
+.body(matchesJsonSchemaInClasspath("employee-dto.json"))
+```
+
