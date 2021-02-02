@@ -171,6 +171,15 @@ public class EmployeesControllerRestAssuredIT {
 
 # Rest Assured séma validáció
 
+```xml
+<dependency>
+    <groupId>io.rest-assured</groupId>
+    <artifactId>json-schema-validator</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+
+
 ```json
 "additionalProperties": false
 ```
