@@ -218,3 +218,42 @@ public class EmployeesDto {
     private List<EmployeeDto> employees;
 }
 ```
+
+# Validáció
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+```java
+@NotNull(message = "Name can not be null")
+```
+
+```java
+@Valid
+```
+
+RFC 7807
+
+```java
+@ExceptionHandler({MethodArgumentNotValidException.class})
+public ResponseEntity<Problem> handleValidationError(MethodArgumentNotValidException e) {
+    List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
+            .map((FieldError fe) -> new Violation(fe.getField(), fe.getDefaultMessage()))
+            .collect(Collectors.toList());
+    Problem problem = Problem.builder()
+            .withType(URI.create("employees/validation-error"))
+            .withTitle("Validation error")
+            .withStatus(Status.BAD_REQUEST)
+            .withDetail(e.getMessage())
+            .with("violations", violations)
+            .build();
+    return ResponseEntity
+      .status(HttpStatus.BAD_REQUEST)
+      .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+      .body(problem);
+}
+```
