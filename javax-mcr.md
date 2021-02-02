@@ -257,3 +257,35 @@ public ResponseEntity<Problem> handleValidationError(MethodArgumentNotValidExcep
       .body(problem);
 }
 ```
+
+# Saját validáció
+
+```java
+@Constraint(validatedBy = NameValidator.class)
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+@Retention(RUNTIME)
+public @interface Name {
+    String message() default "Invalid name";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+    int maxLength() default 50;
+}
+```
+
+```java
+public class NameValidator implements ConstraintValidator<Name, String> {
+  private int maxLength;
+  @Override
+  public boolean isValid(String value, ConstraintValidatorContext context) {
+    return value != null &&
+      !value.isBlank() &&
+      value.length() > 2 && 
+      value.length() <= maxLength && 
+      Character.isUpperCase(value.charAt(0));
+  }
+  @Override
+  public void initialize(Name constraintAnnotation) {
+      maxLength = constraintAnnotation.maxLength();
+  }
+}
+```
