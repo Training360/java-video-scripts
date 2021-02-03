@@ -289,3 +289,30 @@ public class NameValidator implements ConstraintValidator<Name, String> {
   }
 }
 ```
+
+# Spring Boot konfiguráció
+
+```java
+private String hello;
+  public HelloService(@Value("${employees.hello}") String hello) {
+    this.hello = hello;
+  }
+```
+
+```java
+@ConfigurationProperties(prefix = "employees")
+@Data
+public class HelloProperties {
+    private String hello;
+}
+```
+
+```java
+@EnableConfigurationProperties(AcmeProperties.class)
+```
+
+* Parancssorból
+* `set EMPLOYEES_HELLO="Hello from Environment variable"`
+* `java -Demployees.hello=`
+* `docker build -t employees .`
+* `docker run -d -p 8080_8080 -e EMPLOYEES_HELLO="Hello from Docker" employees`
