@@ -316,3 +316,18 @@ public class HelloProperties {
 * `java -Demployees.hello=`
 * `docker build -t employees .`
 * `docker run -d -p 8080_8080 -e EMPLOYEES_HELLO="Hello from Docker" employees`
+
+# Naplózás
+
+```java
+private static final org.slf4j.Logger log =
+  org.slf4j.LoggerFactory.getLogger(LogExample.class);
+@Slf4j
+log.info("Employee has been created");
+log.debug("Employee has been created with name {}",
+  employee.getName());
+```
+
+```
+logging.level.training = debug
+```
