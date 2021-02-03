@@ -396,3 +396,36 @@ public class DbInitializer implements CommandLineRunner {
 
 Developer Tools esetén elérhető webes konzol a `/h2-console` címen
 
+# Spring Data JPA
+
+```
+org.springframework.boot:spring-boot-starter-data-jpa
+```
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "employees")
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "emp_name")
+    private String name;
+    public Employee(String name) {
+        this.name = name;
+    }
+}
+```
+
+```java
+public interface EmployeesRepository extends JpaRepository<Employee, Long> {
+    @Query("select e from Employee e where upper(e.name) like upper(:name)")
+    List<Employee> findAllByPrefix(String name);
+}
+```
+
+* `@Transactional` alkalmazása a service rétegben
+* `application.properties`: `spring.jpa.show-sql=true`
