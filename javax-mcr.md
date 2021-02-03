@@ -331,3 +331,68 @@ log.debug("Employee has been created with name {}",
 ```
 logging.level.training = debug
 ```
+
+# Spring JdbcTemplate
+
+`org.springframework.boot:spring-boot-starter-jdbc` függőség
+Embedded adatbázis támogatás, automatikus DataSource konfiguráció
+Pl H2: `com.h2database:h2`
+
+```
+List<Employee> employees = jdbcTemplate.query(
+  "select id, emp_name from employees",
+  this::convertEmployee);
+Employee employee =
+  jdbcTemplate.queryForObject(
+    "select id, emp_name from employees where id = ?",
+    this::convertEmployee,
+    id);
+private Employee convertEmployee(ResultSet resultSet, int i)
+    throws SQLException {
+  long id = resultSet.getLong("id");
+  String name = resultSet.getString("emp_name");
+  Employee employee = new Employee(id, name);
+  return employee;
+}
+```
+
+```
+KeyHolder keyHolder = new GeneratedKeyHolder();
+jdbcTemplate.update(
+  con -> {
+      PreparedStatement ps =
+        con.prepareStatement("insert into employees(emp_name) values (?)",
+          Statement.RETURN_GENERATED_KEYS);
+      ps.setString(1, employee.getName());
+      return ps;
+  }, keyHolder);
+employee.setId(keyHolder.getKey().longValue());
+```
+
+```
+jdbcTemplate.update(
+  "update employees set emp_name = ? where id = ?", "John Doe", 1);
+jdbcTemplate.update(
+  "delete from employees where id = ?", 1);
+```
+
+```
+@Component
+public class DbInitializer implements CommandLineRunner {
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
+  @Override
+  public void run(String... args) throws Exception {
+    jdbcTemplate.execute("create table employees " +
+      "(id bigint auto_increment, emp_name varchar(255), " +
+      "primary key (id))");
+    jdbcTemplate.execute(
+      "insert into employees(emp_name) values ('John Doe')");
+    jdbcTemplate.execute(
+      "insert into employees(emp_name) values ('Jack Doe')");
+  }
+}
+```
+
+Developer Tools esetén elérhető webes konzol a `/h2-console` címen
+
