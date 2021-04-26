@@ -429,3 +429,47 @@ public interface EmployeesRepository extends JpaRepository<Employee, Long> {
 
 * `@Transactional` alkalmazása a service rétegben
 * `application.properties`: `spring.jpa.show-sql=true`
+
+# MariaDB
+
+A MariaDB a következő Docker paranccsal indítható:
+
+```shell
+docker run 
+  -d
+  -e MYSQL_DATABASE=employees
+  -e MYSQL_USER=employees
+  -e MYSQL_PASSWORD=employees
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  -p 3306:3306
+  --name employees-mariadb
+  mariadb
+```
+
+H2 helyett
+
+```xml
+<dependency>
+  <groupId>org.mariadb.jdbc</groupId>
+  <artifactId>mariadb-java-client</artifactId>
+  <scope>runtime</scope>
+</dependency>
+```
+
+Az `application.properties` állományban:
+
+```properties
+spring.datasource.url=jdbc:mariadb://localhost/employees
+spring.datasource.username=employees
+spring.datasource.password=employees
+
+spring.jpa.hibernate.ddl-auto=create-drop
+```
+
+Create, list
+
+MariaDB DataSource
+
+```
+select * from employees;
+```
