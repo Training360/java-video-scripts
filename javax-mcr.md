@@ -570,6 +570,16 @@ docker run
 
 # Alkalmazás futtatása Docker Compose-zal
 
+* `Dockerfile`
+
+```
+RUN apt update \
+     && apt-get install wget \
+     && apt-get install -y netcat \
+     && wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
+     && chmod +x ./wait-for-it.sh
+```
+
 * `docker-compose.yml`
 
 ```yaml
@@ -582,20 +592,25 @@ services:
     ports:
       - '3308:3306'
     environment:
-      MYSQL_DATABASE: employees
-      MYSQL_USER: employees
-      MYSQL_PASSWORD: employees
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: 'employees'
+      MYSQL_USER: 'employees'
+      MYSQL_PASSWORD: 'employees'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   employees-app:
     image: employees
     restart: always
     ports:
-      - '8081:8080'
+      - '8080:8080'
     depends_on:
       - employees-mariadb
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:mariadb://employees-mariadb/employees'
+    entrypoint: ['./wait-for-it.sh', '-t', '120', 'employees-mariadb:3306', '--', 'java', 'org.springframework.boot.loader.JarLauncher']
 ```
 
 # Flyway
