@@ -473,3 +473,227 @@ MariaDB DataSource
 ```
 select * from employees;
 ```
+
+# Integrációs tesztelés
+
+```java
+@DataJpaTest
+public class EmployeesRepositoryIT {
+
+  @Autowired
+  EmployeesRepository employeesRepository;
+
+  @Test
+  void testPersist() {
+    Employee employee = new Employee("John Doe");
+    employeesRepository.save(employee);
+    List<Employee> employees =
+      employeesRepository.findAll();
+    
+    assertThat(employees)
+      .extracting(Employee::getName)
+      .containsExactly("John Doe");
+  }
+}
+```
+
+```shell
+docker run 
+  -d
+  -e MYSQL_DATABASE=employees
+  -e MYSQL_USER=employees
+  -e MYSQL_PASSWORD=employees
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  -p 3307:3306
+  --name employees-test-mariadb
+  mariadb
+```
+
+* `application.properties` a test ágra, port átírása
+
+# Állapot inicializálása
+
+* `EmployeesControllerRestTemplateIT.testListEmployees()` futtatása
+* `application.properties`-ben `create-drop` helyett `create`
+* `deleteAll()` törlése
+
+```java
+@Sql(statements = "delete from employees")
+```
+
+# H2 integrációs teszteléshez
+
+```xml
+<dependency>
+  <groupId>com.h2database</groupId>
+  <artifactId>h2</artifactId>
+  <scope>test</scope>
+</dependency>
+```
+
+```
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.url=jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+spring.datasource.username=sa
+spring.datasource.password=sa
+```
+
+# Alkalmazás futtatása Dockerben MariaDB-vel
+
+```
+docker network create --driver bridge employees-net
+```
+
+```shell
+docker run 
+  -d
+  -e MYSQL_DATABASE=employees
+  -e MYSQL_USER=employees
+  -e MYSQL_PASSWORD=employees
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  -p 3308:3306
+  --name employees-net-mariadb
+  mariadb
+```
+
+```shell
+docker stop employees
+docker rm employees
+docker run
+    -d  
+    -e SPRING_DATASOURCE_URL=jdbc:mariadb://employees-net-mariadb/employees
+    -p 8080:8080
+     --network employees-net
+    --name employees
+    employees
+```
+
+# Alkalmazás futtatása Docker Compose-zal
+
+* `docker-compose.yml`
+
+```yaml
+version: '3'
+
+services:
+  employees-mariadb:
+    image: mariadb
+    restart: always
+    ports:
+      - '3308:3306'
+    environment:
+      MYSQL_DATABASE: employees
+      MYSQL_USER: employees
+      MYSQL_PASSWORD: employees
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
+  employees-app:
+    image: employees
+    restart: always
+    ports:
+      - '8081:8080'
+    depends_on:
+      - employees-mariadb
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mariadb://employees-mariadb/employees'
+```
+
+# Flyway
+
+```xml
+<dependency>
+  <groupId>org.flywaydb</groupId>
+  <artifactId>flyway-core</artifactId>
+</dependency>
+```
+
+```properties
+spring.jpa.hibernate.ddl-auto=none
+```
+
+* `src/resources/db/migration/V1__employees.sql`
+
+```sql
+create table employees (id bigint auto_increment,
+  emp_name varchar(255), primary key (id));
+insert into employees (emp_name) values ('John Doe');
+insert into employees (emp_name) values ('Jack Doe');
+```
+
+* Táblák törlése
+
+# MongoDB
+
+```shell
+docker run -d -p27017:27017 --name employees-mongo mongo
+```
+
+* project copy: `employees-mongo`, `pom.xml`
+* Törlés: `spring-boot-starter-jdbc`, `spring-boot-starter-data-jpa`, `h2`, `mariadb-java-client`, `postgresql`, `flyway-core`, `liquibase-core`.
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-data-mongodb</artifactId>
+</dependency>
+```
+
+Az `application.properties` fájlban:
+
+```
+spring.data.mongodb.database = employees
+```
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Document("employees")
+public class Employee {
+
+    @Id
+    private String id;
+
+    private String name;
+
+    public Employee(String name) {
+        this.name = name;
+    }
+}
+```
+
+Módosítsuk a repository-t:
+
+```java
+public interface EmployeesRepository extends MongoRepository<Employee, String> {
+    
+}
+```
+
+A Dto-kban, Controllerben, Service metódus paraméterekben mindenütt, ahol `Long` típusú
+azonosítót adtunk tovább, ki kell cserélni `String` típusra.
+
+Az `EmployeesService.updateEmployee()` metódusát is módosítani kell, hogy legyen mentés:
+
+```java
+public EmployeeDto updateEmployee(long id, UpdateEmployeeCommand command) {
+    Employee employee = repository.findById(id)
+      .orElseThrow(() -> new IllegalArgumentException("employee not found"));
+    employee.setName(command.getName());
+    employeesRepository.save(employee);
+    return modelMapper.map(employee, EmployeeDto.class);
+}
+```
+
+* MongoDB connection, Database `employees`
+
+```javascript
+db.employees.find()
+
+db.employees.insertOne({"name": "John Doe"})
+
+db.employees.findOne({'_id': ObjectId('60780cf974bc5648cf220a96')})
+
+db.employees.deleteOne({'_id': ObjectId('60780cf974bc5648cf220a96')})
+```
+
