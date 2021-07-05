@@ -828,3 +828,49 @@ employees.addresses.url = http://localhost:8081/api/addresses?name={name}
 * `/api/employees/1/address`
 
 ## RestTemplate integrációs tesztelés 
+
+```java
+package training.employees;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.client.MockRestServiceServer;
+
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.queryParam;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
+@RestClientTest(value = AddressesGateway.class, properties = "employees.addresses.url = http://localhost:8080/api/addresses?name={name}")
+public class EventStoreGatewayRestTemplateTestIT {
+
+    @Autowired
+    AddressesGateway addressesGateway;
+
+    @Autowired
+    MockRestServiceServer server;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Test
+    void testFindAddressByName() throws JsonProcessingException {
+        String json = objectMapper.writeValueAsString(new AddressDto("Budapest", "Andrássy u. 2."));
+
+        server.expect(requestTo(startsWith("http://localhost:8080/api/addresses")))
+                .andExpect(queryParam("name", "John%20Doe"))
+                .andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
+
+        AddressDto addressDto = addressesGateway.findAddressByName("John Doe");
+
+        assertEquals("Budapest", addressDto.getCity());
+        assertEquals("Andrássy u. 2.", addressDto.getAddress());
+    }
+}
+```
+
