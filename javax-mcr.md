@@ -1194,6 +1194,14 @@ applicationEventPublisher.publishEvent(
 
 ## Continuous Delivery Jenkins Pipeline-nal
 
+
+```
+FROM jenkins/jenkins:lts-jdk11
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+
+RUN jenkins-plugin-cli --plugins "git workflow-aggregator pipeline-stage-view docker-plugin docker-workflow locale blueocean"
+```
+
 ```groovy
 pipeline {
    agent any
