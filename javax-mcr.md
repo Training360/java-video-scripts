@@ -789,3 +789,42 @@ public List<EmployeeDto> employees(Principal principal) {
     return employeeService.listEmployees();
 }
 ```
+
+# RestTemplate
+
+```shell
+docker run -d -p 8081:8080 --name my-addresses training360/addresses
+```
+
+* Swagger
+* `AddressDto`, `city`, `address`
+
+```java
+@Service
+@Slf4j
+public class AddressesGateway {
+
+    private final RestTemplate restTemplate;
+
+    private String url;
+
+    public AddressesGateway(RestTemplateBuilder builder, 
+            @Value("${employees.addresses.url}") String url) {
+        restTemplate = builder.build();
+        this.url = url;
+    }
+
+    public AddressDto findAddressByName(String name) {
+        log.debug("Get address from Addresses application");
+        return restTemplate.getForObject(url, AddressDto.class, name);
+    }
+}
+```
+
+```properties
+employees.addresses.url = http://localhost:8081/api/addresses?name={name}
+```
+
+* `/api/employees/1/address`
+
+## RestTemplate integrációs tesztelés 
