@@ -874,3 +874,348 @@ public class EventStoreGatewayRestTemplateTestIT {
 }
 ```
 
+## WireMock
+
+```xml
+<dependency>
+	<groupId>com.github.tomakehurst</groupId>
+	<artifactId>wiremock-jre8</artifactId>
+	<version>${wiremock.version}</version>
+	<scope>test</scope>
+</dependency>
+```
+
+```java
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+```
+
+
+```java
+public class AddressesGatewayIT {
+
+    static String host = "127.0.0.1";
+
+    static int port;
+
+    static WireMockServer wireMockServer;
+
+    @BeforeAll
+    static void startServer() {
+        port = SocketUtils.findAvailableTcpPort();
+        wireMockServer = new WireMockServer(wireMockConfig().port(port));
+        WireMock.configureFor(host, port);
+        wireMockServer.start();
+    }
+
+    @AfterAll
+    static void stopServer() {
+        wireMockServer.stop();
+    }
+
+    @BeforeEach
+    void resetServer() {
+        WireMock.reset();
+    }
+}
+```
+
+```java
+@Test
+void testFindAddressByName() {
+  String resource = "/api/addresses";
+
+  stubFor(get(urlPathEqualTo("/api/addresses"))
+    .willReturn(aResponse()
+    .withHeader("Content-Type", "application/json")
+    .withBody("{\"city\": \"Budapest\", \"address\": \"Andrássy u. 2.\"}")));
+
+  String url = String.format("http://%s:%d/api/addresses?name={name}", host, port);
+  AddressesGateway gateway = new AddressesGateway(new RestTemplateBuilder(), url);
+  Address address = gateway.findAddressByName("John Doe");
+
+  verify(getRequestedFor(urlPathEqualTo(resource))
+    .withQueryParam("name", equalTo("John Doe")));
+    
+  assertThat(address.getCity()).isEqualTo("Budapest");
+  assertThat(address.getAddress()).isEqualTo("Andrássy u. 2.");
+}
+```
+
+## JMS
+
+```yaml
+version: '3'
+
+services:
+  eventstore-mq:
+    image: training360/eventstore-mq
+    restart: always
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+  eventstore:
+    image: training360/eventstore
+    restart: always
+    depends_on:
+      - eventstore-mq
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_ARTEMIS_HOST: 'eventstore-mq'
+    entrypoint: ["./wait-for-it.sh", "-t", "120", "eventstore-mq:61616", "--", 
+               "java", "org.springframework.boot.loader.JarLauncher"]
+```
+
+```
+docker-compose up
+```
+
+* Elérhető a `http://localhost:8161` címen.
+* Alapértelmezett felhasználónév/jelszó: `admin` / `admin`
+
+* Alkalmazás: `localhost:8082`
+
+## JMS küldés
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-artemis</artifactId>
+</dependency>
+```
+
+* `JmsConfig`
+
+```java
+@Bean
+public MessageConverter messageConverter(ObjectMapper objectMapper){
+  MappingJackson2MessageConverter converter =
+  new MappingJackson2MessageConverter();
+  converter.setTypeIdPropertyName("_typeId");
+converter.setTypeIdMappings(
+  Map.of("CreateEventCommand", EmployeeHasCreatedEvent.class));
+  return converter;
+}
+```
+
+```java
+EmployeesEvent
+  message
+```
+
+
+```java
+public class EventStoreGateway {
+
+    private JmsTemplate jmsTemplate;
+
+    public EventStoreGateway(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
+
+    public void sendEvent(String message) {
+        log.debug("Send event to eventstore");
+        jmsTemplate.convertAndSend("eventsQueue", new EmployeesEvent(message));
+    }
+}
+```
+
+## Fogadás
+
+* `internalQueue`
+
+```java
+@JmsListener(destination = "eventsQueue")
+public void processMessage(EmployeesEvent event) {
+    log.info("" + event.getMessage());
+}
+```
+
+## Actuator
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+`management.endpoints.web.exposure.include = *`
+
+```properties
+management.endpoint.health.show-details = always
+```
+
+* `/health`
+* Heap dump: `/heapdump` (bináris állomány)
+* Thread dump: `/threaddump`
+* Beans: `/beans`
+* Conditions: `/conditions`
+    * Autoconfiguration feltételek teljesültek-e vagy sem - ettől függ, <br /> milyen beanek kerültek létrehozásra
+* HTTP mappings: `/mappings`
+    * HTTP mappings és a hozzá tartozó kiszolgáló metódusok
+* Configuration properties: `/configprops`
+* `/env` végpont - property source-ok alapján felsorolva
+
+* `/flyway` - Flyway
+
+## HttpTrace
+
+* Ha van `HttpTraceRepository` a classpath-on
+* Fejlesztői környezetben: `InMemoryHttpTraceRepository`
+* Éles környezetben: Zipkin vagy Spring Cloud Sleuth
+* Megjelenik a `/httptrace` endpoint
+
+## Info
+
+* `info` prefixszel megadott property-k belekerülnek
+
+```properties
+info.appname = employees
+```
+
+```xml
+<plugin>
+  <groupId>pl.project13.maven</groupId>
+  <artifactId>git-commit-id-plugin</artifactId>
+</plugin>
+```
+
+`mvn package`
+
+## Naplózás
+
+* `/loggers`
+* `/logfile`
+
+```plaintext
+### Get logger
+GET http://localhost:8080/actuator/loggers/training.employees
+
+### Set logger
+POST http://localhost:8080/actuator/loggers/training.employees
+Content-Type: application/json
+
+{
+  "configuredLevel": "INFO"
+}
+```
+
+## Metrics
+
+* `/metrics` végponton
+
+```java
+Counter.builder(EMPLOYEES_CREATED_COUNTER_NAME)
+        .baseUnit("employees")
+        .description("Number of created employees")
+        .register(meterRegistry);
+
+meterRegistry.counter(EMPLOYEES_CREATED_COUNTER_NAME).increment();
+```
+
+* A `/metrics/employees.created` címen elérhető
+
+## Metrics Graphite monitoring eszközzel
+
+(Küld)
+
+```shell
+docker run
+  -d
+  --name graphite
+  --restart=always
+  -p 80:80 -p 2003-2004:2003-2004 -p 2023-2024:2023-2024
+  -p 8125:8125/udp -p 8126:8126
+  graphiteapp/graphite-statsd
+```
+
+Felhasználó/jelszó: `root`/`root`
+
+```xml
+<dependency>
+  <groupId>io.micrometer</groupId>
+  <artifactId>micrometer-registry-graphite</artifactId>
+  <version>${micrometer-registry-graphite.version}</version>
+</dependency>
+```
+
+```properties
+management.metrics.export.graphite.step = 10s
+```
+
+# Metrics Prometheus monitoring eszközzel
+
+(Lekérdez)
+
+```xml
+<dependency>
+  <groupId>io.micrometer</groupId>
+  <artifactId>micrometer-registry-prometheus</artifactId>
+  <version>${micrometer-registry-prometheus.version}</version>
+</dependency>
+```
+
+* `/actuator/prometheus` endpoint
+
+* yml konfiguráció, `prometheus.yml`
+
+```yaml
+scrape_configs:
+  - job_name: 'spring'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 20s
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+```
+
+Tegyük fel, hogy a `prometheus.yml` a `D:\data\prometheus` könyvtárban van
+
+```shell
+docker run -p 9090:9090 -v D:\data\prometheus:/etc/prometheus
+  --name prom prom/prometheus
+```
+
+## Audit events
+
+```java
+applicationEventPublisher.publishEvent(
+  new AuditApplicationEvent("anonymous",
+    "employee_has_been_created",
+      Map.of("name", command.getName())));
+```
+
+* `InMemoryAuditEventRepository`
+* Megjelenik az `/auditevents` endpoint
+
+## Continuous Delivery Jenkins Pipeline-nal
+
+```groovy
+pipeline {
+   agent any
+
+   tools {
+      jdk 'jdk-11'
+   }
+
+   stages {
+      stage('package') {
+         steps {
+            git 'http://gitlab.training360.com/trainers/employees-ci'
+
+            sh "./mvnw clean package"
+         }
+      }
+      stage('test') {
+         steps {
+            sh "./mvnw verify"
+         }
+      }
+   }
+}
+```
+
