@@ -712,3 +712,80 @@ db.employees.findOne({'_id': ObjectId('60780cf974bc5648cf220a96')})
 db.employees.deleteOne({'_id': ObjectId('60780cf974bc5648cf220a96')})
 ```
 
+# KeyCloak indítása
+
+```shell
+docker run -e KEYCLOAK_USER=root -e KEYCLOAK_PASSWORD=root -p 8081:8080
+  --name keycloak jboss/keycloak
+```
+
+* Létre kell hozni egy Realm-et (`EmployeesRealm`)
+* Létre kell hozni egy klienst, amihez meg kell adni annak azonosítóját, <br /> és hogy milyen url-en érhető el (`employees-app`)
+* Létre kell hozni a szerepköröket (`employees_app_user`)
+* Létre kell hozni egy felhasználót (a _Email Verified_ legyen _On_ értéken, hogy be lehessen vele jelentkezni), beállítani a jelszavát (a _Temporary_ értéke legyen _Off_, hogy ne kelljen jelszót módosítani), <br /> valamint hozzáadni a szerepkört (`johndoe`)
+
+```
+http://localhost:8081/auth/realms/EmployeesRealm/.well-known/openid-configuration
+http://localhost:8081/auth/realms/EmployeesRealm/protocol/openid-connect/certs
+```
+
+```http
+POST http://localhost:8081/auth/realms/Employees/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=employees-app&username=johndoe&password=johndoe
+```
+
+* Postmanből: Be kell írni egy létező scope-ot (pl. `profile`), mert üreset nem tud értelmezni
+
+# KeyCloak integráció
+
+```xml
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.keycloak.bom</groupId>
+      <artifactId>keycloak-adapter-bom</artifactId>
+      <version>14.0.0</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+```
+
+```xml
+<dependency>
+  <groupId>org.keycloak</groupId>
+  <artifactId>keycloak-spring-boot-starter</artifactId>
+</dependency>
+```
+
+
+```properties
+keycloak.auth-server-url=http://localhost:8081/auth
+keycloak.realm=Employees
+keycloak.resource=employees-app
+keycloak.public-client=true
+
+keycloak.security-constraints[0].authRoles[0]=employees_app_user
+keycloak.security-constraints[0].securityCollections[0].patterns[0]=/*
+
+keycloak.principal-attribute=preferred_username
+```
+
+```http
+GET http://localhost:8080/api/employees
+Accept: application/json
+Authorization: bearer eyJ...
+```
+
+* Postmannel
+
+```java
+@GetMapping
+public List<EmployeeDto> employees(Principal principal) {
+    log.info("Logged in user: {}", principal.getName());
+    return employeeService.listEmployees();
+}
+```
