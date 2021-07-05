@@ -90,3 +90,71 @@ public class EmployeesDaoTest {
 }
 ```
 
+# JPA
+
+```xml
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-entitymanager</artifactId>
+    <version>5.3.6.Final</version>
+</dependency>
+
+<dependency>
+    <groupId>javax.xml.bind</groupId>
+    <artifactId>jaxb-api</artifactId>
+    <version>2.3.0</version>
+</dependency>
+```
+
+* persistence unit `src/main/resources/META-INF`
+
+```java
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "emp_name")
+    private String name;
+
+    public Employee() {        
+    }
+
+    public Employee(String name) {
+        this.name = name;
+    }
+
+    // Getter és setter metódusok
+}
+```
+
+```java
+EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("pu");
+EntityManager entityManager = entityManagerFactory.createEntityManager();
+entityManager.getTransaction().begin();
+Employee employee = new Employee("John Doe");
+entityManager.persist(employee);
+entityManager.getTransaction().commit();
+```
+
+# További műveletek
+
+```java
+List<Employee> employees = entityManager
+  .createQuery("select e from Employee e order by e.name", 
+      Employee.class)
+    .getResultList();
+```
+
+```java
+Employee employee = entityManager.find(Employee.class, 1);
+employee.setName("Jack Doe");
+```
+
+```java
+Employee employee = entityManager.find(Employee.class, 1);
+entityManager.remove(employee);
+```
