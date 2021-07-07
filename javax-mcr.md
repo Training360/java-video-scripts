@@ -1,3 +1,30 @@
+# Problem
+
+```xml
+<dependency>
+   <groupId>org.zalando</groupId>
+   <artifactId>problem-spring-web-starter</artifactId>
+   <version>0.26.2</version>
+</dependency>
+```
+
+```java
+public class EmployeeNotFoundException extends AbstractThrowableProblem {
+
+    private static final URI TYPE
+            = URI.create("employees/employee-not-found");
+
+    public EmployeeNotFoundException(Long id) {
+        super(
+                TYPE,
+                "Not found",
+                Status.NOT_FOUND,
+                String.format("Employee with id '%d' not found", id));
+    }
+}
+```
+
+
 @WebMvcTest
 @MockBean
 
