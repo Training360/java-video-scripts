@@ -793,7 +793,7 @@ grant_type=password&client_id=employees-app&username=johndoe&password=johndoe
 keycloak.auth-server-url=http://localhost:8081/auth
 keycloak.realm=Employees
 keycloak.resource=employees-app
-keycloak.public-client=true
+keycloak.bearer-only=true
 
 keycloak.security-constraints[0].authRoles[0]=employees_app_user
 keycloak.security-constraints[0].securityCollections[0].patterns[0]=/*
