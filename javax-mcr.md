@@ -1074,6 +1074,11 @@ public void processMessage(EmployeesEvent event) {
 `management.endpoints.web.exposure.include = *`
 
 ```properties
+management.endpoint.shutdown.enabled = true
+```
+
+
+```properties
 management.endpoint.health.show-details = always
 ```
 
