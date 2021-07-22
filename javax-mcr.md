@@ -1234,13 +1234,29 @@ ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 RUN jenkins-plugin-cli --plugins "git workflow-aggregator pipeline-stage-view docker-plugin docker-workflow locale blueocean"
 ```
 
+```shell
+git update-index --chmod=+x mvnw
+```
+
+```xml
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-failsafe-plugin</artifactId>
+	<version>2.22.2</version>
+	<executions>
+		<execution>
+			<goals>
+				<goal>integration-test</goal>
+				<goal>verify</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+```
+
 ```groovy
 pipeline {
    agent any
-
-   tools {
-      jdk 'jdk-11'
-   }
 
    stages {
       stage('package') {
