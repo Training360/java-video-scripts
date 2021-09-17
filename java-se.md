@@ -240,7 +240,7 @@ List<String> names = Arrays.asList("John", "Jack", "Jane"); // elem hozzáadása
 List<String> names = new ArrayList(Arrays.asList("John", "Jack", "Jane"));
 ```
 
-# Ciklusok szintaxisa tömbbel
+# looptypes
 
 ```java
 String[] names = {"John", "Jack" , "Jane"};
@@ -315,9 +315,7 @@ for (int i = 1; i < numbers.size(); i++) {
 
 * Egy `n` elemű tömb vagy lista `0`-tól `n - 1`-ig indexelhető
 
----
-
-# Tömb módosítása
+# looptypesmodify
 
 * Ciklusváltozónak nincs hatása a tömbre!
 
@@ -346,11 +344,77 @@ for (String name: names) {
 }
 ```
 
-# Lista módosítása klasszikus ciklussal
-
 ```java
 List<String> names = new ArrayList<>(Arrays.asList("John", "Jack", "Jane"));
 for (int i = 0; i < names.size(); i++) {
     names.set(i, i + ". " + names.get(i));
 }
+```
+
+# chars
+
+```java
+System.out.println('a');
+```
+
+* Számként is típuskényszeríthető
+
+```java
+System.out.println((int) 'a'); // 97
+```
+
+```java
+char c = 'p';
+System.out.println(c == 'p');
+System.out.println(c < 'q');
+```
+
+Karakter eltolás
+
+```java
+char c = 'a';
+char d = (char)(c + 1); // b
+```
+
+Számjegy vagy betű?
+
+```java
+System.out.println((int) '0'); // 48
+```
+
+```java
+System.out.println('a' < c && c < 'z'); // Kisbetű
+System.out.println('0' < c && c < '9'); // Számjegy
+```
+
+Számjegy vagy betű - előregyártott metódusok
+
+```java
+System.out.println(Character.isAlphabetic(c));
+System.out.println(Character.isDigit(c));
+System.out.println(Character.isWhitespace(c));
+```
+
+String egy karakterének lekérdezése
+
+```java
+String s = "Hello Java 8";
+System.out.println(s.charAt(0)); // H
+```
+
+```java
+String s = "Hello Java 8";
+System.out.println(s.toCharArray()[0]); // H
+
+for (char c: s.toCharArray()) {
+    System.out.println(c);
+    System.out.println(Character.isAlphabetic(c));
+}
+```
+Tömbből String
+
+```java
+char[] chars = {'a', 'b', 'c'};
+String s = new String(chars);
+System.out.println(s); // abc
 ```
