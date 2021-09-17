@@ -418,3 +418,56 @@ char[] chars = {'a', 'b', 'c'};
 String s = new String(chars);
 System.out.println(s); // abc
 ```
+
+# conversion
+
+Típuskényszerítés 
+
+```java
+int i = 900;
+byte b = (byte) i;
+```
+
+```java
+long l = i;
+l = (long) i; // Itt explicit típuskényszerítés nem szükséges és nem is javasolt
+long m = 900; // A 900 literál alapból int
+```
+
+Boxing
+
+```java
+int i = 900;
+Integer o = Integer.valueOf(i);
+```
+
+```java
+Integer o = 900;
+Integer p = o;
+```
+ Unboxing 
+
+```java
+Integer o = 900;
+int i = o.intValue();
+```
+
+```java
+Integer o = 900;
+int j = o; // Auto
+```
+
+Szöveg és primitív típus közötti konverzió
+
+```java
+int i = 900;
+String s = "" + i; // Nem javasolt
+String t = Integer.toString(i);
+```
+
+Parse:
+
+```java
+String s = "900";
+int i = Integer.parseInt(s);
+```
