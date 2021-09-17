@@ -239,3 +239,118 @@ List<String> names = Arrays.asList("John", "Jack", "Jane"); // elem hozzáadása
 
 List<String> names = new ArrayList(Arrays.asList("John", "Jack", "Jane"));
 ```
+
+# Ciklusok szintaxisa tömbbel
+
+```java
+String[] names = {"John", "Jack" , "Jane"};
+for (int i = 0; i < names.length; i++)  {
+    System.out.println(names[i]);
+}
+```
+
+```java
+String[] names = {"John", "Jack" , "Jane"};
+for (String name: names)  {
+    System.out.println(name);
+}
+```
+
+```java
+List<String> names = Arrays.asList("John", "Jack", "Jane");
+for (int i = 0; i < names.size(); i++)  {
+    System.out.println(names.get(i));
+}
+```
+
+```java
+List<String> names = Arrays.asList("John", "Jack", "Jane");
+for (String name: names)  {
+    System.out.println(name);
+}
+```
+
+
+```java
+List<String> names = Arrays.asList("John", "Jack", "Jane");
+for (int i = 0; i < names.size(); i++) {
+    System.out.println(i + ". elem: " + names.get(i));
+}
+```
+
+* Visszafele
+
+```java
+List<String> names = Arrays.asList("John", "Jack", "Jane");
+for (int i = names.size() - 1; i >= 0; i--) {
+    System.out.println(names.get(i));
+}
+```
+
+* Minden második elem
+
+```java
+List<String> names = Arrays.asList("John", "Jack", "Jane");
+for (int i = 0; i < names.size(); i += 2) {
+    System.out.println(names.get(i));
+}
+```
+
+
+* Az adott elem kisebb vagy nagyobb-e mint az előző
+
+```java
+List<Integer> numbers = List.of(1, 2, 1, 2, 3, 1);
+for (int i = 1; i < numbers.size(); i++) {
+    if (numbers.get(i - 1) < numbers.get(i)) {
+        System.out.println("nő");
+    }
+    else if (numbers.get(i - 1) > numbers.get(i)) {
+        System.out.println("csökken");
+    }
+}
+```
+
+# Hiba az indexeléssel
+
+* Egy `n` elemű tömb vagy lista `0`-tól `n - 1`-ig indexelhető
+
+---
+
+# Tömb módosítása
+
+* Ciklusváltozónak nincs hatása a tömbre!
+
+```java
+int[] numbers = {1, 2, 3};
+for (int number: numbers) {
+    number = 0;
+}
+```
+
+
+```java
+int[] numbers = {1, 2, 3};
+for (int i = 0; i < numbers.length; i++) {
+    numbers[i] = numbers[i] * 2;
+}
+```
+
+```java
+List<String> names = new ArrayList<>(Arrays.asList("John", "Jack", "Jane"));
+for (String name: names) {
+    if (name.equals("Jane")) {
+        names.remove("Jane");
+        // vagy names.add(0, "Joe");
+    }
+}
+```
+
+# Lista módosítása klasszikus ciklussal
+
+```java
+List<String> names = new ArrayList<>(Arrays.asList("John", "Jack", "Jane"));
+for (int i = 0; i < names.size(); i++) {
+    names.set(i, i + ". " + names.get(i));
+}
+```
