@@ -227,3 +227,15 @@ finally {
 Kivételt magát is tovább lehet dobni, vagy becsomagolni
 
 java-se-module14-lesson01-lab.mp4
+
+
+# aslist
+
+```java
+List<String> names = new ArrayList<>();
+names.add("John"); // Kíírás hozzáadásonként
+
+List<String> names = Arrays.asList("John", "Jack", "Jane"); // elem hozzáadása
+
+List<String> names = new ArrayList(Arrays.asList("John", "Jack", "Jane"));
+```
