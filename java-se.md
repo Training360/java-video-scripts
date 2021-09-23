@@ -471,3 +471,16 @@ Parse:
 String s = "900";
 int i = Integer.parseInt(s);
 ```
+
+# junit5 assert
+
+* `assertNull()`, `assertNotNull()` `null` vizsgálatra
+* `assertNotEquals()` annak ellenőrzésére, hogy nem egyenlőek
+* `assertSame()`, `assertNotSame()` hasonlít össze referenciákat
+* `assertTrue()`, `assertFalse()` - lehetőleg kerüljük, <br /> helyette `assertEquals()`
+
+```java
+assertEquals(1.0, 1.0, 0.005);
+```
+
+`assertArrayEquals` tömbök kezelésére
