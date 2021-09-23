@@ -533,3 +533,24 @@ for (String name: names) {
 
 * `ConcurrentModificationException`
 
+# introexceptionwritefiletestjunit4
+
+```java
+public class NamesTest {
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    @Test
+    public void writeNames() throws IOException {
+        Path path = temporaryFolder.newFile("names.txt").toPath();
+        System.out.println(path);
+        List<Employee> employees =
+                Arrays.asList(new Employee("John"), new Employee("Jack"), new Employee("Jane"));
+        new Names().writeNames(employees, path);
+
+        List<String> lines = Files.readAllLines(path);
+        assertEquals(Arrays.asList("John", "Jack", "Jane"), lines);
+    }
+}
+```
