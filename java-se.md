@@ -606,14 +606,17 @@ String names = "John Doe\n" +
 
 Trainer, Address
 
+```
 példányosítás - null
 majd setter hívás
 lekérdezés külön változóba
 lekérdezés láncolva
 konstruktorban átadva
+```
 
 # composition list
 
+```
 példányosítás - null
 setterrel, de módosítható listát
 egy sorban
@@ -622,3 +625,4 @@ city lekérdezése azonnal
 inicializálás üres listával
 add metódus megírása
 kezdőérték átadása konstruktorban
+```
