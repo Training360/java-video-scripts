@@ -576,3 +576,28 @@ class NamesTest {
     }
 }
 ```
+
+# linebreak
+
+```java
+System.out.println("John");
+System.out.println("Doe");
+
+System.out.print("John");
+System.out.print("Doe");
+
+System.out.println("John\r\nDoe");
+System.out.println("John\nDoe");
+
+System.out.println("John" + "\n" + "Doe");
+
+System.out.println("John" + System.lineSeparator() + "Doe");
+
+String names = "John Doe " +
+               "Jack Doe " +
+               "Jane Doe";
+               
+String names = "John Doe\n" +
+               "Jack Doe\n" +
+               "Jane Doe\n";               
+```
