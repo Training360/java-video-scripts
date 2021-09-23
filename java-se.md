@@ -484,3 +484,52 @@ assertEquals(1.0, 1.0, 0.005);
 ```
 
 `assertArrayEquals` tömbök kezelésére
+
+# introexceptionmoreexceptions
+
+Nullával osztás
+
+```java
+int result = 10 / 0;
+```
+* Null értéken metódus hívása
+
+```java
+    String name = null;
+    System.out.println(name.toUpperCase());
+```
+
+*  Indexelési probléma
+
+```java
+int[] numbers = {1, 2, 3};
+System.out.println(numbers[10]);
+```
+
+```java
+List<String> names = Arrays.asList("Jane", "Joe");
+System.out.println(names.get(10));
+```
+
+* Módosíthatatlan lista
+
+```java
+List<String> names = Arrays.asList("Jane", "Joe", "Jack");
+
+for (String name: names) {
+    names.remove(name);
+}
+```
+
+* Bejárás közben módosítás
+
+```java
+List<String> names = new ArrayList<>(Arrays.asList("Jane", "Joe", "Jack"));
+
+for (String name: names) {
+    names.remove(name);
+}
+```
+
+* `ConcurrentModificationException`
+
