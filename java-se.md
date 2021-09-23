@@ -601,3 +601,24 @@ String names = "John Doe\n" +
                "Jack Doe\n" +
                "Jane Doe\n";               
 ```
+
+# composition
+
+Trainer, Address
+
+példányosítás - null
+majd setter hívás
+lekérdezés külön változóba
+lekérdezés láncolva
+konstruktorban átadva
+
+# composition list
+
+példányosítás - null
+setterrel, de módosítható listát
+egy sorban
+lekérdezés külön változóba, majd hozzáadás
+city lekérdezése azonnal
+inicializálás üres listával
+add metódus megírása
+kezdőérték átadása konstruktorban
