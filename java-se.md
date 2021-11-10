@@ -626,3 +626,19 @@ inicializálás üres listával
 add metódus megírása
 kezdőérték átadása konstruktorban
 ```
+
+# dynamictypes
+
+```java
+int i;
+
+Trainer trainer = new Trainer("John Doe");
+
+Human human = new Trainer("John Doe");
+
+Trainer trainer = new Trainer("John Doe");
+Human human = trainer;
+
+Human human = new Human("John Doe");
+human = new Trainer("Jack Doe");
+```
