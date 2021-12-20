@@ -164,3 +164,15 @@ employee.setName("Jack Doe");
 Employee employee = entityManager.find(Employee.class, 1);
 entityManager.remove(employee);
 ```
+
+# Tesztadatok előkészítése
+
+JDBC flyway
+ - lefuttatom egyszer: létrehozza a táblát, van benne adat
+ - lefuttatom még egyszer - ugyanúgy egy rekord van benne, előzőt kitörli
+ - clean törlése
+ - használjuk teszt adat gyártására
+ - átírjuk - elszáll
+ - új insert, éles adatbázisba is bekerül
+ - nem használjuk teszt adat gyártására, csak fejlesztés során új táblák létrehozására
+- testFindEmployeeNameById 

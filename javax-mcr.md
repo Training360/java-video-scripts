@@ -1275,3 +1275,51 @@ pipeline {
 }
 ```
 
+# MapStruct
+
+modelmapper -> comment
+
+<mapstruct.version>1.4.2.Final</mapstruct.version>
+
+<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+
+<plugin>
+   	<groupId>org.apache.maven.plugins</groupId>
+   	<artifactId>maven-compiler-plugin</artifactId>
+   	<version>3.8.1</version>
+   	<configuration>
+   		<annotationProcessorPaths>
+   			<path>
+   				<groupId>org.projectlombok</groupId>
+   				<artifactId>lombok</artifactId>
+   				<version>${lombok.version}</version>
+   			</path>
+   			<path>
+   				<groupId>org.mapstruct</groupId>
+   				<artifactId>mapstruct-processor</artifactId>
+   				<version>${mapstruct.version}</version>
+   			</path>
+   		</annotationProcessorPaths>
+   	</configuration>
+
+</plugin>
+
+EmployeesApplication -> kivenni
+
+package employees;
+
+import org.mapstruct.Mapper;
+
+import java.util.List;
+
+@Mapper(componentModel = "spring")
+public interface EmployeeMapper {
+
+    List<EmployeeDto> toDto(List<Employee> employees);
+
+    EmployeeDto toDto(Employee employee);
+}
