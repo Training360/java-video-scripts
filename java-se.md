@@ -642,3 +642,68 @@ Human human = trainer;
 Human human = new Human("John Doe");
 human = new Trainer("Jack Doe");
 ```
+
+# Lambda
+
+```java
+names.forEach((String name) -> {System.out.println(name);});
+
+names.forEach(name -> System.out.println(name));
+
+names.replaceAll((String name) -> {return name.toUpperCase();});
+
+names.replaceAll(name -> name.toUpperCase());
+
+names.replaceAll(String::toUpperCase);
+
+public String toFirstCharacters(String text) {
+    return text.substring(0, 2);
+}
+
+names.replaceAll(name -> toFirstCharacters(name));
+
+names.replaceAll(this::toFirstCharacters);
+
+List<String> names = new ArrayList<>(Arrays.asList("John Doe", "Jack Doe", "Jane Doe"));
+names.removeIf((String name) -> {return name.startsWith("Jane");});
+
+// paraméter típusa
+
+```
+
+# Közbülső
+
+```java
+    public static void main(String[] args) {
+        List<Integer> numbers =
+                Arrays.asList(5, 8, 2, 3, 10, 8, 15, 1, 18);
+
+        OptionalInt min = numbers
+                .stream()
+                .mapToInt(i -> i)
+                .filter(n -> n < 10)
+                .distinct()
+                .map(n -> n + 10)
+                .peek(System.out::println)
+                .sorted()
+//                .forEach(System.out::println);
+                .min();
+        System.out.println(min);
+```
+
+# Streamek és tételek
+
+Összegzés tétele	
+	Trénerek életkorának összessége
+Számlálás tétele
+    Hány tréner van
+	Hány tréner született korábban, mint
+Szélsőérték keresés tétele
+	Legkorábban született születési éve
+	Legkorábban született neve
+Eldöntés tétele
+	
+Szűrés
+	1990-nél korábban született
+Transzformáció
+	Trénerek neve
